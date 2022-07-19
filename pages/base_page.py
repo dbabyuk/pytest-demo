@@ -1,4 +1,3 @@
-from selenium.webdriver.common.by import By
 
 
 WAIT_TIME = 3

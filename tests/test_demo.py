@@ -47,3 +47,18 @@ def test_add_to_cart_red_font(main_page, index_):
     res = main_page.font_color(index_, 'add_to_cart')
     assert res == 'red'
 
+
+@pytest.fixture(scope='module')
+def select_single_item(main_page):
+    main_page.select_item()
+
+
+def test_add_item_to_the_cart(main_page, select_single_item):
+    item_selected = main_page.item_text()
+    assert item_selected == 'REMOVE'
+
+
+def test_black_color_remove_btn(main_page, select_single_item):
+    item_selected = main_page.font_color(object_element='add_to_cart')
+    assert item_selected == 'black'
+

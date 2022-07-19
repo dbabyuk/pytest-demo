@@ -7,10 +7,10 @@ class MainPage(BasePage):
     _title = (By.CSS_SELECTOR, 'span[class="title"]')
     _cart = (By.CSS_SELECTOR, 'a[class="shopping_cart_link"]')
     _item_name = (By.CSS_SELECTOR, 'div[class="inventory_item_name"]')
-    _add_to_cart = (By.CSS_SELECTOR, 'button[name*="add-to-cart"]')
     _image = (By.CSS_SELECTOR, 'img[class="inventory_item_img"]')
     _menu = (By.CSS_SELECTOR, 'button[id*="menu"]')
     _logout = (By.CSS_SELECTOR, 'a[id*="logout"]')
+    _add_to_cart_btn = (By.CSS_SELECTOR, 'button[class*="btn_inventory"]')
 
     def get_title(self):
         return self.get_webelement(self._title).text
@@ -36,12 +36,12 @@ class MainPage(BasePage):
         if object_element == 'title':
             webelements = self.get_webelements(self._item_name)
         else:
-            webelements = self.get_webelements(self._add_to_cart)
+            webelements = self.get_webelements(self._add_to_cart_btn)
         rgb_color = webelements[index_].value_of_css_property('color')
         if rgb_color == 'rgba(226, 35, 26, 1)':
             res = 'red'
         else:
-            res = None
+            res = 'black'
         return res
 
     def item_title_format(self, index_=0):
@@ -53,3 +53,9 @@ class MainPage(BasePage):
     def logout(self):
         self._click_menu_btn()
         self.get_webelement(self._logout).click()
+
+    def select_item(self, index_=0):
+        self.get_webelements(self._add_to_cart_btn)[index_].click()
+
+    def item_text(self, index_=0):
+        return self.get_webelements(self._add_to_cart_btn)[index_].text
