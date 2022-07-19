@@ -1,25 +1,19 @@
 from selenium.webdriver.common.by import By
+from pages.base_page import BasePage
 
-WAIT_TIME = 3
 
-class LoginPage:
-
-    def __init__(self, driver):
-        self.driver = driver
-        self.driver.implicitly_wait(WAIT_TIME)
+class LoginPage(BasePage):
 
     _username = (By.ID, 'user-name')
     _password = (By.ID, 'password')
     _login_button = (By.ID, 'login-button')
 
     def enter_username(self, username):
-        webelement = self.driver.find_element(*self._username)
-        webelement.send_keys(username)
+        self.get_webelement(self._username).send_keys(username)
 
     def enter_password(self, password):
-        webelement = self.driver.find_element(*self._password)
-        webelement.send_keys(password)
+        self.get_webelement(self._password).send_keys(password)
 
     def click_login_btn(self):
-        self.driver.find_element(*self._login_button).click()
+        self.get_webelement(self._login_button).click()
 
