@@ -1,4 +1,4 @@
-
+from selenium.webdriver.common.by import By
 
 WAIT_TIME = 3
 
@@ -9,8 +9,22 @@ class BasePage:
         self.driver = driver
         self.driver.implicitly_wait(WAIT_TIME)
 
+    _title = (By.CSS_SELECTOR, 'span[class="title"]')
+    _item_name = (By.CSS_SELECTOR, 'div[class="inventory_item_name"]')
+    _item_price = (By.CSS_SELECTOR, 'div[class="inventory_item_price"]')
+
     def get_webelement(self, locator):
         return self.driver.find_element(*locator)
 
     def get_webelements(self, locator):
         return self.driver.find_elements(*locator)
+
+    def get_title(self):
+        return self.get_webelement(self._title).text
+
+    def item_title_name(self, index_=0):
+        return self.get_webelements(self._item_name)[index_].text
+
+    def item_price(self, index_=0):
+        return self.get_webelements(self._item_price)[index_].text
+

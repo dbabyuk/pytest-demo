@@ -3,7 +3,7 @@ import pytest
 from webdriver_manager.chrome import ChromeDriverManager
 from pages.login_page import LoginPage
 from pages.main_page import MainPage
-
+from pages.cart_page import CartPage
 
 URL_UI = "https://saucedemo.com"
 USERNAME = "standard_user"
@@ -33,3 +33,9 @@ def main_page(driver_instance, login_procedure):
     main_page_instance = MainPage(driver_instance)
     yield main_page_instance
     main_page_instance.logout()
+
+
+@pytest.fixture(scope='module')
+def cart_page(driver_instance, main_page):
+    cart_page_instance = CartPage(driver_instance)
+    return cart_page_instance

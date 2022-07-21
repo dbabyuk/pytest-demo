@@ -4,19 +4,19 @@ from pages.base_page import BasePage
 
 class MainPage(BasePage):
 
-    _title = (By.CSS_SELECTOR, 'span[class="title"]')
     _cart = (By.CSS_SELECTOR, 'a[class="shopping_cart_link"]')
-    _item_name = (By.CSS_SELECTOR, 'div[class="inventory_item_name"]')
     _image = (By.CSS_SELECTOR, 'img[class="inventory_item_img"]')
     _menu = (By.CSS_SELECTOR, 'button[id*="menu"]')
     _logout = (By.CSS_SELECTOR, 'a[id*="logout"]')
-    _add_to_cart_btn = (By.CSS_SELECTOR, 'button[class*="btn_inventory"]')
+    _cart_btn = (By.CSS_SELECTOR, 'button[class*="btn_inventory"]')
 
-    def get_title(self):
-        return self.get_webelement(self._title).text
-
-    def cart_icon_content(self):
+    def cart_icon_content(self) -> str:
+        """Returns cart text content"""
         return self.get_webelement(self._cart).text
+
+    def click_cart_icon(self):
+        """Clicks cart icon"""
+        self.get_webelement(self._cart).click()
 
     def inventory_items(self):
         webelements = self.get_webelements(self._item_name)
@@ -25,7 +25,7 @@ class MainPage(BasePage):
             res.append(elem.text)
         return res
 
-    def image_is_present(self, index_=0):
+    def image_is_present(self, index_: int = 0) -> bool:
         try:
             webelements = self.get_webelements(self._image)[index_]
             return True
@@ -36,16 +36,13 @@ class MainPage(BasePage):
         if object_element == 'title':
             webelements = self.get_webelements(self._item_name)
         else:
-            webelements = self.get_webelements(self._add_to_cart_btn)
+            webelements = self.get_webelements(self._cart_btn)
         rgb_color = webelements[index_].value_of_css_property('color')
         if rgb_color == 'rgba(226, 35, 26, 1)':
             res = 'red'
         else:
             res = 'black'
         return res
-
-    def item_title_format(self, index_=0):
-        return self.get_webelements(self._item_name)[index_].text
 
     def _click_menu_btn(self):
         self.get_webelement(self._menu).click()
@@ -55,7 +52,7 @@ class MainPage(BasePage):
         self.get_webelement(self._logout).click()
 
     def select_item(self, index_=0):
-        self.get_webelements(self._add_to_cart_btn)[index_].click()
+        self.get_webelements(self._cart_btn)[index_].click()
 
     def item_text(self, index_=0):
-        return self.get_webelements(self._add_to_cart_btn)[index_].text
+        return self.get_webelements(self._cart_btn)[index_].text
