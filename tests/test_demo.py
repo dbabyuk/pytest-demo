@@ -47,19 +47,19 @@ def test_add_to_cart_red_font(main_page, index_):
     assert res == 'red'
 
 
-@pytest.fixture(scope='module')
-def select_single_item(main_page):
-    main_page.select_item()
+@pytest.fixture(scope='module', params=range(6))
+def select_single_item(main_page, request):
+    main_page.add_or_remove_item(index_=1)
 
 
 @pytest.mark.unit
 def test_add_item_to_the_cart(main_page, select_single_item):
-    item_selected = main_page.item_text()
+    item_selected = main_page.item_text(index_=1)
     assert item_selected == 'REMOVE'
 
 
 def test_black_color_remove_btn(main_page, select_single_item):
-    item_selected = main_page.font_color(object_element='add_to_cart')
+    item_selected = main_page.font_color(index_=1, object_element='add_to_cart')
     assert item_selected == 'black'
 
 
@@ -70,7 +70,7 @@ def test_cart_label_is_one(main_page, select_single_item):
 
 @pytest.fixture(scope='module')
 def item_values_on_main_page(main_page) -> dict:
-    return {'title': main_page.item_title_name(), 'price': main_page.item_price()}
+    return {'title': main_page.item_title_name(index_=1), 'price': main_page.item_price(index_=1)}
 
 
 @pytest.fixture(scope='module')
@@ -99,12 +99,24 @@ def test_item_price_match(click_cart_icon, cart_page):
     price_from_main_page = click_cart_icon['price']
     assert price_from_cart_page == price_from_main_page
 
-# @pytest.fixture(scope='module')
-# def click_remove_btn(click_cart_icon, cart_page, main_page):
-#     main_page.select_item()
-#
-# def test_1(click_remove_btn):
-#     pass
+
+@pytest.fixture(scope='module')
+def click_remove_btn(click_cart_icon, cart_page, main_page):
+    main_page.add_or_remove_item()
 
 
+def test_no_products_in_the_cart(click_remove_btn, cart_page):
+    assert not cart_page.product_items_are_present()
 
+
+def test_cart_icon_without_labels(click_remove_btn, cart_page):
+    assert cart_page.cart_icon_content() == ''
+
+
+@pytest.fixture(scope='module')
+def click_continue_shopping(click_remove_btn, cart_page):
+    cart_page.continue_shopping()
+
+
+def test_initial_browser_state(click_continue_shopping, main_page):
+    assert main_page.get_title() == 'PRODUCTS' and main_page.cart_icon_content() == ''

@@ -4,15 +4,10 @@ from pages.base_page import BasePage
 
 class MainPage(BasePage):
 
-    _cart = (By.CSS_SELECTOR, 'a[class="shopping_cart_link"]')
     _image = (By.CSS_SELECTOR, 'img[class="inventory_item_img"]')
     _menu = (By.CSS_SELECTOR, 'button[id*="menu"]')
     _logout = (By.CSS_SELECTOR, 'a[id*="logout"]')
-    _cart_btn = (By.CSS_SELECTOR, 'button[class*="btn_inventory"]')
-
-    def cart_icon_content(self) -> str:
-        """Returns cart text content"""
-        return self.get_webelement(self._cart).text
+    _cart_btn = (By.CSS_SELECTOR, 'div[class*="item"] button')
 
     def click_cart_icon(self):
         """Clicks cart icon"""
@@ -51,7 +46,8 @@ class MainPage(BasePage):
         self._click_menu_btn()
         self.get_webelement(self._logout).click()
 
-    def select_item(self, index_=0):
+    def add_or_remove_item(self, index_=0):
+        """Clicks on "ADD TO CART / REMOVE" button"""
         self.get_webelements(self._cart_btn)[index_].click()
 
     def item_text(self, index_=0):

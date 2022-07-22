@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-WAIT_TIME = 3
+WAIT_TIME = 1
 
 
 class BasePage:
@@ -12,6 +12,7 @@ class BasePage:
     _title = (By.CSS_SELECTOR, 'span[class="title"]')
     _item_name = (By.CSS_SELECTOR, 'div[class="inventory_item_name"]')
     _item_price = (By.CSS_SELECTOR, 'div[class="inventory_item_price"]')
+    _cart = (By.CSS_SELECTOR, 'a[class="shopping_cart_link"]')
 
     def get_webelement(self, locator):
         return self.driver.find_element(*locator)
@@ -27,4 +28,8 @@ class BasePage:
 
     def item_price(self, index_=0):
         return self.get_webelements(self._item_price)[index_].text
+
+    def cart_icon_content(self) -> str:
+        """Returns cart text content"""
+        return self.get_webelement(self._cart).text
 
