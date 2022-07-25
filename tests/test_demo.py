@@ -47,37 +47,40 @@ def test_add_to_cart_red_font(main_page, index_):
     assert res == 'red'
 
 
-@pytest.fixture(scope='module', params=range(6))
-def select_single_item(main_page, request):
-    main_page.add_or_remove_item(index_=1)
+@pytest.fixture(scope='module', params=_ids.keys(), ids=_ids.values())
+def select_single_item(main_page, request) -> int:
+    """Selects a parametrized item by index and returns the index value"""
+    main_page.add_or_remove_item(index_=request.param)
+    yield request.param
+    main_page.add_or_remove_item(index_=request.param)
 
 
-@pytest.mark.unit
 def test_add_item_to_the_cart(main_page, select_single_item):
-    item_selected = main_page.item_text(index_=1)
+    item_selected = main_page.item_text(index_=select_single_item)
     assert item_selected == 'REMOVE'
 
 
 def test_black_color_remove_btn(main_page, select_single_item):
-    item_selected = main_page.font_color(index_=1, object_element='add_to_cart')
+    item_selected = main_page.font_color(index_=select_single_item, object_element='add_to_cart')
     assert item_selected == 'black'
 
 
-@pytest.mark.unit
 def test_cart_label_is_one(main_page, select_single_item):
     assert main_page.cart_icon_content() == '1'
 
 
 @pytest.fixture(scope='module')
-def item_values_on_main_page(main_page) -> dict:
-    return {'title': main_page.item_title_name(index_=1), 'price': main_page.item_price(index_=1)}
+def item_values_on_main_page(main_page, select_single_item) -> dict:
+    return {'title': main_page.item_title_name(index_=select_single_item),
+            'price': main_page.item_price(index_=select_single_item)}
 
 
 @pytest.fixture(scope='module')
-def click_cart_icon(main_page, select_single_item, item_values_on_main_page) -> dict:
+def click_cart_icon(main_page, select_single_item, item_values_on_main_page, cart_page) -> dict:
     """Clicks on cart icon and returns the dictionary of item values on main page"""
     main_page.click_cart_icon()
-    return item_values_on_main_page
+    yield item_values_on_main_page
+    cart_page.continue_shopping()
 
 
 def test_cart_page_is_active(click_cart_icon, cart_page):
@@ -102,7 +105,7 @@ def test_item_price_match(click_cart_icon, cart_page):
 
 @pytest.fixture(scope='module')
 def click_remove_btn(click_cart_icon, cart_page, main_page):
-    main_page.add_or_remove_item()
+    cart_page.add_or_remove_item()
 
 
 def test_no_products_in_the_cart(click_remove_btn, cart_page):

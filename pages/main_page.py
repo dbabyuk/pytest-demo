@@ -46,9 +46,5 @@ class MainPage(BasePage):
         self._click_menu_btn()
         self.get_webelement(self._logout).click()
 
-    def add_or_remove_item(self, index_=0):
-        """Clicks on "ADD TO CART / REMOVE" button"""
-        self.get_webelements(self._cart_btn)[index_].click()
-
     def item_text(self, index_=0):
         return self.get_webelements(self._cart_btn)[index_].text
