@@ -52,7 +52,8 @@ def select_single_item(main_page, request) -> int:
     """Selects a parametrized item by index and returns the index value"""
     main_page.add_or_remove_item(index_=request.param)
     yield request.param
-    main_page.add_or_remove_item(index_=request.param)
+    if main_page.item_text(index_=request.param) == 'REMOVE':
+        main_page.add_or_remove_item(index_=request.param)
 
 
 def test_add_item_to_the_cart(main_page, select_single_item):
@@ -80,7 +81,8 @@ def click_cart_icon(main_page, select_single_item, item_values_on_main_page, car
     """Clicks on cart icon and returns the dictionary of item values on main page"""
     main_page.click_cart_icon()
     yield item_values_on_main_page
-    cart_page.continue_shopping()
+    if cart_page.get_title() == "YOUR CART":
+        cart_page.continue_shopping()
 
 
 def test_cart_page_is_active(click_cart_icon, cart_page):
@@ -104,7 +106,7 @@ def test_item_price_match(click_cart_icon, cart_page):
 
 
 @pytest.fixture(scope='module')
-def click_remove_btn(click_cart_icon, cart_page, main_page):
+def click_remove_btn(click_cart_icon, cart_page):
     cart_page.add_or_remove_item()
 
 

@@ -7,7 +7,6 @@ class MainPage(BasePage):
     _image = (By.CSS_SELECTOR, 'img[class="inventory_item_img"]')
     _menu = (By.CSS_SELECTOR, 'button[id*="menu"]')
     _logout = (By.CSS_SELECTOR, 'a[id*="logout"]')
-    _cart_btn = (By.CSS_SELECTOR, 'div[class*="item"] button')
 
     def click_cart_icon(self):
         """Clicks cart icon"""
@@ -45,6 +44,8 @@ class MainPage(BasePage):
     def logout(self):
         self._click_menu_btn()
         self.get_webelement(self._logout).click()
+
+
 
     def item_text(self, index_=0):
         return self.get_webelements(self._cart_btn)[index_].text
