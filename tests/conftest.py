@@ -10,7 +10,7 @@ USERNAME = "standard_user"
 PASSWORD = "secret_sauce"
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def driver_instance():
     options = webdriver.ChromeOptions()
     options.add_argument("--window-size=1920,1080")
