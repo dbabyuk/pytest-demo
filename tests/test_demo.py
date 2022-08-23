@@ -1,5 +1,5 @@
 import pytest
-
+# Ver-0.1
 
 class TestFirstPart:
 
@@ -107,3 +107,6 @@ class TestSecondPart:
 
     def test_initial_browser_state(self, click_continue_shopping, main_page):
         assert main_page.get_title() == 'PRODUCTS' and main_page.cart_icon_content() == ''
+
+    def test_dummy(self):
+        pass
