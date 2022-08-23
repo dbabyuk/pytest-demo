@@ -5,7 +5,7 @@ from pages.login_page import LoginPage
 from pages.main_page import MainPage
 from pages.cart_page import CartPage
 
-URL_UI = "https://saucedemo.com"
+URL_UI = "https://saucedemo.com/base_0"
 USERNAME = "standard_user"
 PASSWORD = "secret_sauce"
 
@@ -37,5 +37,6 @@ def main_page(driver_instance, login_procedure):
 
 @pytest.fixture(scope='module')
 def cart_page(driver_instance, main_page):
-    cart_page_instance = CartPage(driver_instance)
+    cart_page_instance_1 = CartPage(driver_instance)
+    cart_page_instance = cart_page_instance_1
     return cart_page_instance
