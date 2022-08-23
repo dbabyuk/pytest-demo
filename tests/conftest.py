@@ -38,11 +38,6 @@ def main_page(driver_instance, login_procedure):
 
 @pytest.fixture(scope='module')
 def cart_page(driver_instance, main_page):
-<<<<<<< HEAD
     cart_page_instance_11 = CartPage(driver_instance)
     return cart_page_instance_11
-=======
-    cart_page_instance_1 = CartPage(driver_instance)
-    cart_page_instance = cart_page_instance_1
-    return cart_page_instance
->>>>>>> base_0 commit
+
